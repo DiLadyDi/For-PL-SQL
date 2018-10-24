@@ -1,0 +1,70 @@
+--alias - псевдоним (можно м as или без него, просто после поля  написатьзаголовок для столбца
+select last_name, salary*1.13 as Зарплата
+from employees;
+
+--псевдоним для названия таблицы
+select last_name, salary*1.13 as Зарплата
+from employees e
+where e.salary >1000;
+
+--null значение
+select last_name, commission_pct
+from employees;
+
+--null значение  - при */+- остается все равно null, к нему есть две операции определения null или нет
+select last_name, commission_pct+100
+from employees;
+
+--конкатинация
+select last_name || 'is a(n) '|| job_id
+from employees;
+
+--where
+select last_name, salary
+from employees
+where salary>1000;
+
+--where
+select last_name, salary 
+from employees
+where salary>1000;
+
+--LIKE (чувствителен к регистру, % - 0 иил много любых знаков. Выведеи тех, у кого имя начинается на букву S:
+select first_name
+from employees
+where first_name like 'S%';
+
+--NOT NULL
+select last_name, manager_id
+from employees
+where manager_id is null;
+
+-- ORDER BY
+select last_name, department_id, salary
+from employees 
+order by department_id, salary desc;
+
+--для ввода значений переменной с КЛАВИАТУРЫ используется присвоение и :
+select last_name, salary 
+from employees
+where salary = :зарплата;
+
+--ex.1
+select e.last_name ||'    ' || e.first_name Фамилия__Имя, d.department_name Департамент, e.salary Зарплата
+from employees e, departments d
+where E.DEPARTMENT_ID= d.DEPARTMENT_ID and e.department_id = 10;
+
+--ex.2
+select last_name ||'    ' || first_name Фамилия__Имя, To_char(hire_date, 'YYYY.MM.DD') Дата_найма
+from employees 
+where salary>1500;
+
+--ex.3
+select last_name ||'    ' || first_name Фамилия__Имя
+from employees
+where employee_id = :ID_сотрудника;
+
+--ex.4
+select last_name ||'    ' || first_name Фамилия__Имя, 12*salary Зарплата_за_год
+from employees
+where department_id = 40 OR manager_id is null;
