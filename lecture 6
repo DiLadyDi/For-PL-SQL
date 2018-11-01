@@ -1,0 +1,19 @@
+--лекция 6. 1.11.18 подзапросы
+
+--ex1
+select *
+from employees e
+where E.EMPLOYEE_ID!=201 and 
+salary > (select salary from employees where employee_id = 201)
+and hire_date < (select hire_date from employees where employee_id = 201);
+
+--ex2
+select distinct d.department_name as Департаменты
+from departments d
+where d.department_id in (select e.department_id from employees e where e.salary>12000);
+
+--ex3
+select *
+from countries c
+where c.region_id in (select region_id from regions where lower(region_name) like '%m%');
+
