@@ -17,3 +17,35 @@ select *
 from countries c
 where c.region_id in (select region_id from regions where lower(region_name) like '%m%');
 
+--Лекция 7. SET-операторы
+
+--ex1
+select '1' Задание_1 from dual
+union 
+select '2' from dual
+union 
+select '3' from dual;
+
+--ex2
+select e.employee_id
+from employees e
+union 
+select employee_id
+from job_history
+order by  employee_id desc;
+
+--ex3
+select e.employee_id
+from employees e
+intersect 
+select employee_id
+from job_history;
+
+--ex4
+select e.employee_id
+from employees e
+minus 
+select employee_id
+from job_history;
+
+
