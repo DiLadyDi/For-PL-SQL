@@ -1,0 +1,30 @@
+create or replace package taxes_pkg_Ageeva is
+
+  function tax (value number) 
+  return number;
+  
+ end taxes_pkg_Ageeva;
+ 
+ create or replace package body taxes_pkg_Ageeva is
+
+  function tax (value number) 
+  return number
+  is
+  rate number := 0.08;
+  
+  begin
+  --insert into employees (employee_id) values  (2);     --так работать не будет
+  return (value*rate);
+ 
+  end tax;
+  
+ end taxes_pkg_Ageeva;
+ 
+ 
+ 
+ --ВАЖНО!!! -- в запросах нельзя имподбзовать функции,
+ -- содержащие
+ -- COMMIT/ROLLBACK,
+ -- CREATE/INSERT/UPDATE/DELETE (Т.Е. МЕНЯЮЩИЕ ТАБЛИЦЫ
+ select taxes_pkg_Ageeva.tax(salary), salary, last_name
+ from employees;
