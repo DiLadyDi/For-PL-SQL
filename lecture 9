@@ -1,10 +1,20 @@
+--спецификация пакета
+
 create or replace package taxes_pkg_Ageeva is
+
+type emp_table_type is table of employees%rowtype index by binary_integer;
+
 
   function tax (value number) 
   return number;
   
+  procedure get_employees(emps out emp_table_type);
+  
  end taxes_pkg_Ageeva;
  
+ 
+ 
+ --тело пакета
  create or replace package body taxes_pkg_Ageeva is
 
   function tax (value number) 
@@ -18,6 +28,23 @@ create or replace package taxes_pkg_Ageeva is
  
   end tax;
   
+  
+   procedure get_employees(emps out emp_table_type)  
+   is
+   
+   i binary_integer:=0;
+   
+   begin 
+   
+   for records in (select * from employees)
+   
+   loop
+   emps(i):=records;
+   i:=i+1;
+   end loop;
+   
+   end get_employees;
+  
  end taxes_pkg_Ageeva;
  
  
@@ -26,5 +53,22 @@ create or replace package taxes_pkg_Ageeva is
  -- содержащие
  -- COMMIT/ROLLBACK,
  -- CREATE/INSERT/UPDATE/DELETE (Т.Е. МЕНЯЮЩИЕ ТАБЛИЦЫ
+ --DDL / DML команды
  select taxes_pkg_Ageeva.tax(salary), salary, last_name
  from employees;
+ 
+ declare
+ tab TAXES_PKG_AGEEVA.EMP_TABLE_TYPE;
+ 
+begin
+TAXES_PKG_AGEEVA.GET_EMPLOYEES(tab);
+dbms_output.put_line('В массиве '||tab.count|| '  элементов.');
+dbms_output.put_line('Индекс первого элемента = '||tab.first);
+tab.delete(0);
+
+dbms_output.put_line('После удаления:');
+dbms_output.put_line('В массиве '||tab.count|| '  элементов.');
+dbms_output.put_line('Индекс первого элемента = '||tab.first);
+dbms_output.put_line(tab(1).salary);
+
+end;
