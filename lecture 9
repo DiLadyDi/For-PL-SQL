@@ -10,6 +10,8 @@ type emp_table_type is table of employees%rowtype index by binary_integer;
   
   procedure get_employees(emps out emp_table_type);
   
+  procedure show_table(tab emp_table_type);
+  
  end taxes_pkg_Ageeva;
  
  
@@ -44,6 +46,16 @@ type emp_table_type is table of employees%rowtype index by binary_integer;
    end loop;
    
    end get_employees;
+   
+    procedure show_table(tab emp_table_type) is
+    
+    begin
+    for i in tab.first..tab.last loop
+    dbms_output.put_line(tab(i).salary);   
+    
+    end loop;
+    
+    end show_table;
   
  end taxes_pkg_Ageeva;
  
@@ -65,10 +77,11 @@ TAXES_PKG_AGEEVA.GET_EMPLOYEES(tab);
 dbms_output.put_line('В массиве '||tab.count|| '  элементов.');
 dbms_output.put_line('Индекс первого элемента = '||tab.first);
 tab.delete(0);
-
+dbms_output.put_line(' ' );
 dbms_output.put_line('После удаления:');
+dbms_output.put_line(' ' );
 dbms_output.put_line('В массиве '||tab.count|| '  элементов.');
 dbms_output.put_line('Индекс первого элемента = '||tab.first);
 dbms_output.put_line(tab(1).salary);
-
+TAXES_PKG_AGEEVA.show_table(tab);
 end;
